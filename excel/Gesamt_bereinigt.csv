@@ -1,0 +1,46 @@
+﻿Gerätenummer;Mitarbeiter-ID;Ausgabe am;Rückgabe am;Gerätenummer.1;Gerätetyp;Modell;Kaufdatum;Netto-Kaufpreis;Standort;Name;Abteilung;Standort Mitarbeiter
+G0004;1003;19.06.25;08.09.25;G0004;Laptop;Dell XPS;05.05.25;1007,88;München;Paul Dobes-Stiffel;Produktion;Hamburg
+G0004;1001;11.08.25;12.08.25;G0004;Laptop;Dell XPS;05.05.25;1007,88;München;Aleksandr Weinhage;IT;Berlin
+G0005;1009;07.04.24;;G0005;Drucker;Canon Pixma;03.11.21;823,23;Berlin;Univ.Prof. Heimo Karge;Marketing;Hamburg
+G0005;1006;23.08.25;22.09.25;G0005;Drucker;Canon Pixma;03.11.21;823,23;Berlin;Eric Patberg B.Sc.;Vertrieb;Hamburg
+G0005;1012;03.11.24;;G0005;Drucker;Canon Pixma;03.11.21;823,23;Berlin;Ariane Klemt-Kaul;IT;München
+G0005;1010;30.08.25;25.09.25;G0005;Drucker;Canon Pixma;03.11.21;823,23;Berlin;Carolin Hande;IT;Hamburg
+G0006;1012;31.05.25;10.06.25;G0006;Smartphone;Samsung S21;01.01.24;1257,96;München;Ariane Klemt-Kaul;IT;München
+G0006;1007;03.07.24;;G0006;Smartphone;Samsung S21;01.01.24;1257,96;München;Orhan Siering MBA.;IT;Berlin
+G0007;1001;09.09.24;16.07.25;G0007;Laptop;Lenovo ThinkPad;13.06.21;869,09;Hamburg;Aleksandr Weinhage;IT;Berlin
+G0007;1001;11.08.25;;G0007;Laptop;Lenovo ThinkPad;13.06.21;869,09;Hamburg;Aleksandr Weinhage;IT;Berlin
+G0009;1011;12.07.25;15.07.25;G0009;Laptop;Dell XPS;10.04.23;1458,02;München;Auguste Davids;IT;Hamburg
+G0011;1005;29.06.25;29.08.25;G0011;Drucker;Brother HL;09.09.25;1417,1;München;Alexandre Davids;Vertrieb;Berlin
+G0013;1012;07.05.24;27.06.24;G0013;Drucker;Canon Pixma;16.05.21;1898,65;Hamburg;Ariane Klemt-Kaul;IT;München
+G0013;1009;28.01.24;26.02.25;G0013;Drucker;Canon Pixma;16.05.21;1898,65;Hamburg;Univ.Prof. Heimo Karge;Marketing;Hamburg
+G0014;1001;26.11.24;03.03.25;G0014;Laptop;Lenovo ThinkPad;03.03.21;1415,97;Hamburg;Aleksandr Weinhage;IT;Berlin
+G0015;1010;26.03.24;17.08.25;G0015;Smartphone;iPhone 13;20.09.22;661,44;München;Carolin Hande;IT;Hamburg
+G0015;1002;15.08.24;;G0015;Smartphone;iPhone 13;20.09.22;661,44;München;Eleni Hauffer;IT;Berlin
+G0016;1003;08.02.24;09.06.25;G0016;Drucker;Canon Pixma;30.03.23;1501,06;Berlin;Paul Dobes-Stiffel;Produktion;Hamburg
+G0016;1002;22.05.25;31.05.25;G0016;Drucker;Canon Pixma;30.03.23;1501,06;Berlin;Eleni Hauffer;IT;Berlin
+G0016;1010;28.07.25;;G0016;Drucker;Canon Pixma;30.03.23;1501,06;Berlin;Carolin Hande;IT;Hamburg
+G0016;1007;18.05.25;08.07.25;G0016;Drucker;Canon Pixma;30.03.23;1501,06;Berlin;Orhan Siering MBA.;IT;Berlin
+G0016;1010;31.05.25;02.10.25;G0016;Drucker;Canon Pixma;30.03.23;1501,06;Berlin;Carolin Hande;IT;Hamburg
+G0018;1011;03.10.24;27.11.24;G0018;Tablet;iPad;05.10.22;1688,07;München;Auguste Davids;IT;Hamburg
+G0021;1008;30.09.25;05.10.25;G0021;Monitor;Samsung Curved;22.02.23;1134,16;München;Dipl.-Ing. Klaus-Werner Holsten B.Sc.;IT;Hamburg
+G0022;1002;30.08.25;30.09.25;G0022;Tablet;iPad;20.08.24;1591,98;Hamburg;Eleni Hauffer;IT;Berlin
+G0022;1002;20.07.24;06.01.25;G0022;Tablet;iPad;20.08.24;1591,98;Hamburg;Eleni Hauffer;IT;Berlin
+G0024;1008;24.03.24;;G0024;Monitor;Dell UltraSharp;01.03.22;750,91;Berlin;Dipl.-Ing. Klaus-Werner Holsten B.Sc.;IT;Hamburg
+G0024;1005;27.03.25;30.07.25;G0024;Monitor;Dell UltraSharp;01.03.22;750,91;Berlin;Alexandre Davids;Vertrieb;Berlin
+G0025;1005;18.01.25;;G0025;Beamer;Epson EB;06.12.23;545,46;Berlin;Alexandre Davids;Vertrieb;Berlin
+G0027;1004;21.04.24;01.07.25;G0027;Monitor;Samsung Curved;24.07.22;501,64;München;Klemens Löffler;Vertrieb;Hamburg
+G0028;1004;19.08.24;;G0028;Beamer;Epson EB;19.01.23;1246,58;Hamburg;Klemens Löffler;Vertrieb;Hamburg
+G0028;1006;04.12.24;16.03.25;G0028;Beamer;Epson EB;19.01.23;1246,58;Hamburg;Eric Patberg B.Sc.;Vertrieb;Hamburg
+G0028;1003;30.10.24;04.12.24;G0028;Beamer;Epson EB;19.01.23;1246,58;Hamburg;Paul Dobes-Stiffel;Produktion;Hamburg
+G0029;1002;21.09.25;04.10.25;G0029;Laptop;Lenovo ThinkPad;21.05.21;1553,15;Hamburg;Eleni Hauffer;IT;Berlin
+G0030;1012;15.05.25;05.09.25;G0030;Beamer;Epson EB;27.03.22;1629,76;München;Ariane Klemt-Kaul;IT;München
+G0030;1005;01.12.23;24.09.24;G0030;Beamer;Epson EB;27.03.22;1629,76;München;Alexandre Davids;Vertrieb;Berlin
+G0031;1004;29.01.24;;G0031;Laptop;HP EliteBook;28.04.25;1095,62;München;Klemens Löffler;Vertrieb;Hamburg
+G0031;1004;14.02.24;;G0031;Laptop;HP EliteBook;28.04.25;1095,62;München;Klemens Löffler;Vertrieb;Hamburg
+G0032;1003;04.08.24;02.08.25;G0032;Laptop;Lenovo ThinkPad;11.11.22;1801,36;München;Paul Dobes-Stiffel;Produktion;Hamburg
+G0033;1009;24.03.25;07.05.25;G0033;Beamer;BenQ MW550;03.03.22;1212,29;Berlin;Univ.Prof. Heimo Karge;Marketing;Hamburg
+G0033;1002;25.03.25;;G0033;Beamer;BenQ MW550;03.03.22;1212,29;Berlin;Eleni Hauffer;IT;Berlin
+G0035;1009;09.05.24;;G0035;Beamer;BenQ MW550;03.01.24;644,54;Berlin;Univ.Prof. Heimo Karge;Marketing;Hamburg
+G0035;1001;06.01.24;;G0035;Beamer;BenQ MW550;03.01.24;644,54;Berlin;Aleksandr Weinhage;IT;Berlin
+G0035;1003;05.05.24;;G0035;Beamer;BenQ MW550;03.01.24;644,54;Berlin;Paul Dobes-Stiffel;Produktion;Hamburg
+G0035;1001;15.12.24;;G0035;Beamer;BenQ MW550;03.01.24;644,54;Berlin;Aleksandr Weinhage;IT;Berlin
