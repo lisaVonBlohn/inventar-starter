@@ -1,5 +1,5 @@
 {
-  "name": "DB-Light + MQTT Starter",
+  "name": "Inventar Starter",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "forwardPorts": [
     8000,

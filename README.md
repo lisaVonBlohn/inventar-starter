@@ -1,22 +1,59 @@
-# praxisnacharbeitung-ss25
+# Inventar Starter
 
-# Datenanalyse Excel
+Arbeitsbasis für **Tag 3**. Dieses Projekt ist bewusst **nicht fertig**, sondern soll euch einen praktikablen Einstieg geben:
 
-## Arbeitsablauf
-- Daten in Power Query bereinigt.
-- Gerätedaten, Ausleihen und Mitarbeiter zusammengeführt.
-- Ergebnisse mit PivotTables ausgewertet.
-- Diagrammen erstellt.
-- Gesamttabelle als CSV exportiert.
+- Infrastruktur ist vorbereitet
+- UI- und Form-Support ist vorhanden
+- MQTT kann sofort getestet werden
+- die eigentliche Inventar-Domäne baut ihr selbst
 
-## Probleme und Lösungen
-- Datums- und Zahlenformate wurden teilweise falsch erkannt.
-- Lösung: Datentypen und Gebietsschema in Power Query angepasst.
-- Aufgabe D2 gabs zwei Zeilen mit derselben GeräteId für Laptop mit G0031, die mit verschiede Daten als ausgeliehen verbucht.
-- Lösung: einfach AKZEPTANZ!!
+Der `grades-starter` dient daneben als **Referenzprojekt** für Struktur, Formulare, Templates und CRUD-Muster.
 
-## Erkenntnisse
-- Ausleihen nach Gerätetyp und Standort ausgewertet.
-- Nicht eingesetzte Geräte und deren Gesamtwert analysiert.
-- Excel ist nicht so intuitiv und einfach wie gedacht.
-- Nochmal git geübt, yaay
+## Enthalten
+
+- FastAPI
+- PostgreSQL
+- MQTT (Eclipse Mosquitto)
+- Jinja-Templates
+- `python-multipart` für HTML-Formulare
+- Startseite, `/health`, `/docs`, `/inventory`
+- MQTT-Publish-Endpunkt `/mqtt/publish`
+
+## Schnellstart
+
+```bash
+docker compose up -d --build
+```
+
+Danach prüfen:
+
+```bash
+open http://localhost:8000/
+open http://localhost:8000/health
+open http://localhost:8000/inventory
+open http://localhost:8000/docs
+```
+
+## Eure Aufgabe
+
+Ergänzt in diesem Projekt:
+
+- das Inventar-Schema in `db/init/010_inventory_schema.sql`
+- Seed-Daten für eure Domäne
+- Endpunkte für `devices` und `assignments`
+- Domänenregeln wie eindeutige Seriennummern und max. eine aktive Ausleihe
+- eine einfache Inventar-Oberfläche
+
+## MQTT testen
+
+Subscriber:
+
+```bash
+mosquitto_sub -h localhost -t "inventory/#" -v
+```
+
+Publish über die API:
+
+```bash
+curl -X POST "http://localhost:8000/mqtt/publish?topic=inventory/test&payload=hello"
+```
