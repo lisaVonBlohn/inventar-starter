@@ -1,4 +1,6 @@
 from fastapi import FastAPI, Request, Query
+from fastapi import HTTPException
+from .models import DeviceCreate, AssignmentCreate, AssignmentReturn
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 import os
@@ -39,51 +41,193 @@ async def health():
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "title": "Inventar Starter"})
 
-@app.get("/devices", response_class=HTMLResponse)
-def devices_page(request: Request):
-  with get_conn() as conn, conn.cursor() as cur:
-    cur.execute(
-      "select * from geräte"
-    )
-    devices = list(cur.fetchall())
+@app.get("/devices")
+def get_devices():
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute("""
+            SELECT *
+            FROM geraete
+            ORDER BY geraete_id
+        """)
 
-  return templates.TemplateResponse(
-    "geräte/index.html",
-    {"request": request, "title": "Geräte", "geräte": devices},
-  )
+        columns = [col[0] for col in cur.description]
+        return [
+            dict(zip(columns, row))
+            for row in cur.fetchall()
+        ]
 
-@app.post("/devices", response_class=HTMLResponse)
-def create_device(
-  request: Request,
-  geraet_id: str = Form(...),
-  geraetetyp: str = Form(...),
-  nachname: str = Form(...),
-  programme: str = Form(...),
-  semester: int = Form(...),
-  return_to: str | None = Form(None),
+@app.get("/assignments/active")
+def get_active_assignments():
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute("""
+            SELECT
+                a.ausleih_id,
+                a.mitarbeiter_id,
+                a.geraete_id,
+                a.ausgabe_datum,
+                a.rueckgabe_datum
+            FROM ausleihe AS a
+            WHERE a.rueckgabe_datum IS NULL
+            ORDER BY a.ausleih_id
+        """)
+
+        columns = [col[0] for col in cur.description]
+        return [
+            dict(zip(columns, row))
+            for row in cur.fetchall()
+        ]
+
+@app.post("/assignments", status_code=201)
+def create_assignment(assignment: AssignmentCreate):
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute("""
+                SELECT aktiv
+                FROM mitarbeiter
+                WHERE personalnummer = %s
+            """, (assignment.person_id,))
+
+            person = cur.fetchone()
+
+            if person is None or not person[0]:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Mitarbeiter fehlt oder ist inaktiv."
+                )
+
+            cur.execute("""
+                SELECT status
+                FROM geraete
+                WHERE geraete_id = %s
+                FOR UPDATE
+            """, (assignment.device_id,))
+
+            device = cur.fetchone()
+
+            if device is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail="Gerät nicht gefunden."
+                )
+
+            if device[0].lower() != "frei":
+                raise HTTPException(
+                    status_code=409,
+                    detail="Gerät ist nicht verfügbar."
+                )
+
+            cur.execute("""
+                INSERT INTO ausleihe (
+                    mitarbeiter_id,
+                    geraete_id,
+                    ausgabe_datum
+                )
+                VALUES (%s, %s, COALESCE(%s, CURRENT_DATE))
+                RETURNING ausleih_id
+            """, (
+                assignment.person_id,
+                assignment.device_id,
+                assignment.issued_at
+            ))
+
+            assignment_id = cur.fetchone()[0]
+
+            cur.execute("""
+                UPDATE geraete
+                SET status = 'ausgeliehen'
+                WHERE geraete_id = %s
+            """, (assignment.device_id,))
+
+            return {"ausleih_id": assignment_id}
+
+    except Exception as exc:
+        if (
+            getattr(exc, "sqlstate", None) == "23505"
+            or getattr(exc, "pgcode", None) == "23505"
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="Gerät hat bereits eine aktive Ausleihe."
+            )
+        raise
+        
+@app.post("/assignments/{id}/return")
+def return_assignment(
+    assignment_id: int,
+    returned: AssignmentReturn
 ):
-  data = DeviceCreate(
-    geraet_id=geraet_id,
-    geraetetyp=geraetetyp,
-    hersteller=hersteller,
-    modell=modell,
-    geraetename=geraetename,
-    netto_preis=netto_preis,
-    seriennummer=seriennummer,
-    status=status,
-  )
-  with get_conn() as conn, conn.cursor() as cur:
-    cur.execute(
-      """
-      insert into device (matrikel, vorname, nachname, programme, semester)
-      values (%s, %s, %s, %s, %s)
-      on conflict (matrikel) do nothing
-      """,
-      (data.matrikel, data.vorname, data.nachname, data.programme, data.semester),
-    )
-  if return_to:
-    return RedirectResponse(return_to, status_code=303)
-  return grades_page(request)
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT geraete_id
+                FROM ausleihe
+                WHERE ausleih_id = %s
+                  AND rueckgabe_datum IS NULL
+                FOR UPDATE
+            """, (assignment_id,))
+
+            assignment = cur.fetchone()
+
+            if assignment is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail="Aktive Ausleihe nicht gefunden."
+                )
+
+            device_id = assignment[0]
+
+            cur.execute("""
+                UPDATE ausleihe
+                SET rueckgabe_datum = COALESCE(%s, CURRENT_DATE)
+                WHERE ausleih_id = %s
+            """, (returned.returned_at, assignment_id))
+
+            cur.execute("""
+                UPDATE geraete
+                SET status = 'frei'
+                WHERE geraete_id = %s
+            """, (device_id,))
+
+            return {"message": "Gerät erfolgreich zurückgegeben."}
+
+@app.post("/devices", status_code=201)
+def create_device(device: DeviceCreate):
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO geraete (
+                    geraete_typ,
+                    hersteller,
+                    modell,
+                    geraete_name,
+                    netto_preis,
+                    seriennummer,
+                    status
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                RETURNING geraete_id
+            """, (
+                device.device_type_id,
+                device.manufacturer,
+                device.model,
+                device.device_name,
+                device.net_price,
+                device.serial_number,
+                device.status
+            ))
+
+            return {"geraete_id": cur.fetchone()[0]}
+
+    except Exception as exc:
+        if (
+            getattr(exc, "sqlstate", None) == "23505"
+            or getattr(exc, "pgcode", None) == "23505"
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="Diese Seriennummer existiert bereits."
+            )
+        raise
 
 
 @app.get("/inventory", response_class=HTMLResponse)
